@@ -221,6 +221,7 @@
             }
           }
           
+          
           ganoEljuego() {
             swal("Platzi", "Felicitaciones, ganaste el juego!", "success").then(this.inicializar)
           }
@@ -230,9 +231,8 @@
               this.eliminarEventosClick()
               this.inicializar()
             })
+          }
       }       
-
-      }
       function empezarJuego() {
         window.juego = new Juego()
       }
