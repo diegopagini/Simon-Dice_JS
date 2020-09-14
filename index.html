@@ -82,6 +82,10 @@
       .hide {
         display: none;
       }
+
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
     </style>
   </head>
   <body>
@@ -92,6 +96,7 @@
       <div id="verde" class="color verde right" data-color="verde"></div>
       <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Empezar a jugar!</button>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
 
       const celeste = document.getElementById('celeste')
@@ -101,8 +106,10 @@
       const btnEmpezar = document.getElementById('btnEmpezar')
       const ULTIMO_NIVEL = 10
 
+
       class Juego {
         constructor() {
+          this.inicializar = this.inicializar.bind(this)
           this.inicializar()
           this.generarSecuencia()
           setTimeout(this.siguienteNivel, 500)
@@ -111,13 +118,21 @@
         inicializar() {
           this.siguienteNivel = this.siguienteNivel.bind(this)
           this.elegirColor = this.elegirColor.bind(this)
-          btnEmpezar.classList.add('hide')
+          this.toogleBtnEmpezar()
           this.nivel = 1
           this.colores = {
             celeste,
             violeta,
             naranja,
             verde
+          }
+        }
+
+        toogleBtnEmpezar() {
+          if (btnEmpezar.classList.contains('hide')) {
+            btnEmpezar.classList.remove('hide')
+          } else {
+            btnEmpezar.classList.add('hide')
           }
         }
 
@@ -197,15 +212,25 @@
               this.nivel ++
               this.eliminarEventosClick()
               if (this.nivel === (ULTIMO_NIVEL + 1))
-
-            } else {
+                this.ganoEljuego()
+              } else {
               setTimeout(this.siguienteNivel, 1500)
+              }
+           } else {
+             this.perdioElJuego()
             }
           }
-        } else {
+          
+          ganoEljuego() {
+            swal("Platzi", "Felicitaciones, ganaste el juego!", "success").then(this.inicializar)
+          }
 
-        }
-      }
+          perdioEljuego() {
+            swal("Platzi", "Lo lamentamos, perdiste :(", "error").then (() => {
+              this.eliminarEventosClick()
+              this.inicializar()
+            })
+      }       
 
       function empezarJuego() {
         window.juego = new Juego()
